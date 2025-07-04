@@ -28,13 +28,13 @@ The Business Manager has shared an Excel file containing order data from 2009 to
   
 - There are four Customer Segments in the dataset
 
---  Consumer	1649
+	--  Consumer	1649
 
---  Corporate	3076
+	--  Corporate	3076
 
---  Home Office	2032
+	--  Home Office	2032
 
---  Small Business	1642
+	--  Small Business	1642
 
 
 
@@ -135,11 +135,40 @@ The shipping mode where the company spent the most is in delivery truck
 
 #### Case Scenario II 
 6. Who are the most valuable customers, and what products or services do they typically 
-purchase? 
-7. Which small business customer had the highest sales? 
-8. Which Corporate Customer placed the most number of orders in 2009 – 2012? 
-9. Which consumer customer was the most profitable one? 
-10. Which customer returned items, and what segment do they belong to? 
+purchase?
+
+
+7. Which small business customer had the highest sales?
+`select top 10
+Customer_Name, region, province, customer_segment,
+	round(sum(sales),2) as revenue 
+from kmscase
+group by  region, province, customer_name, customer_segment
+order by revenue desc
+WHERE customer_segment = 'Small Business'`
+
+  ANSWER:
+  Dennis Kane	Quebec	Quebec	Small Business	75967.59
+  
+8. Which Corporate Customer placed the most number of orders in 2009 – 2012?
+   
+9. Which consumer customer was the most profitable one?
+
+`select top 10
+Customer_Name, region, province, customer_segment,
+	round(sum(sales),2) as revenue, sum(profit) as pr
+from kmscase
+group by  region, province, customer_name, customer_segment
+order by pr desc`
+
+ANSWER:
+Emily Phan- Atlantic-New Brunswick, Consumer segment, revenue 97011.19, profit 28663.71
+
+10. Which customer returned items, and what segment do they belong to?
+
+-- They were all in the 4 customer segments
+    
+    
 11. If the delivery truck is the most economical but the slowest shipping method and 
 Express Air is the fastest but the most expensive one, do you think the company 
 appropriately spent shipping costs based on the Order Priority? Explain your answer 
