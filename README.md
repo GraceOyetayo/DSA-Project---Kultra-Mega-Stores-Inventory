@@ -36,6 +36,9 @@ The Business Manager has shared an Excel file containing order data from 2009 to
 
 	--  Small Business	1642
 
+  - As customer name is not unique, region and province are added to the grouping to ensure each customer in the region even if same name is accounted for.
+    We have a total of 1,538 unique customer
+
 
 
 
@@ -50,7 +53,7 @@ GROUP BY product_category
 ORDER BY sales_per_category DESC`
 
 ANSWER
-Technology	89061.05	5984248.18
+`Technology	89061.05	5984248.18`
 
 The highest sales were made from the Technology category; it is also the category where about 54% of the profit in the last four years has been gotten.
 
@@ -93,6 +96,8 @@ where region = 'Ontario'
 and product_sub_category = 'Appliances'
 group by region`
 
+ANSWER: 
+
 Total sales made in the region Ontario is N202,346.84 
 
 
@@ -126,8 +131,8 @@ This dataset do not show further details into why these customer stopped placing
 
 5. KMS incurred the most shipping cost using which shipping method?
 
-Delivery Truck	51,971.94
-Express Air	7,850.91
+Delivery Truck	51,971.94,
+Express Air	7,850.91,
 Regular Air	48,008.19
 
 The shipping mode where the company spent the most is in delivery truck
@@ -138,7 +143,10 @@ The shipping mode where the company spent the most is in delivery truck
 purchase?
 
 
-7. Which small business customer had the highest sales?
+
+
+6. Which small business customer had the highest sales?
+   
 `select top 10
 Customer_Name, region, province, customer_segment,
 	round(sum(sales),2) as revenue 
@@ -148,7 +156,9 @@ order by revenue desc
 WHERE customer_segment = 'Small Business'`
 
   ANSWER:
+  
   Dennis Kane of Quebec	in the Small Business customer segment with N75,967.59 
+  
   
 8. Which Corporate Customer placed the most number of orders in 2009 – 2012?
    
@@ -163,16 +173,22 @@ group by  region, province, customer_name, customer_segment
 select region, province, customer_name, customer_segment, year(order_date), count(distinct order_id) as ord
 from allorders
 where customer_name in(select customer_name
-						from customerincorporate)
-						and  customer_segment ='Corporate'
+			from customerincorporate)
+	and  customer_segment ='Corporate'
 group by region, province, customer_name, year(order_date), customer_segment
 order by year(order_date), ord desc
 `
 ANSWER:
 In 2009, Adam Shillingsburg of Alberta, West placed the most orders in the corporate customer segment with 7 orders
+
 In 2010, Doug Bickford of Northwest Territories, placed the most orders in the corporate customer segment with 6 orders
+
 In 2011, Adam Hart of Yukon, Yukon placed the most orders in the corporate customer segment with 5 orders
+
 In 2012, Alan Hwang of Ontario, Ontario placed the most orders in the corporate customer segment with 6 orders
+
+
+
 
 `CREATE VIEW ccorp as
 WITH customerincorporate as
@@ -190,14 +206,16 @@ where customer_name in(select customer_name
 			from customerincorporate)
 	and  customer_segment ='Corporate'
 group by region, province, customer_name, year(order_date), customer_segment
+`
 
-SELECT Customer_Name, region, province, customer_segment,
+`SELECT Customer_Name, region, province, customer_segment,
 	sum(ord) as numberoforders
 from ccorp
 group by region, province, customer_name, customer_segment
-order by numberoforders desc
+order by numberoforders desc`
 
 ANSWER:
+
 In total, for the four year period, Jonathan Doherty of Saskachewan, Prarie placed the highest number of orders in the corporate customer segment with 14 orders
 
    
