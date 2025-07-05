@@ -13,7 +13,7 @@ The Business Manager has shared an Excel file containing order data from 2009 to
 
 ## Data Analysis Steps
 ### Exploratory Data Analysis
-- Ontario province has the highest number of customer in a province, with 281 customer making 281/5517 percent and Nunuvat has the lowest 38
+- Customers in the dataset are from 13 provinces and 8 regions in the country. Ontario province has the highest number of customer in a province, with 281 customer making 281/5517 percent and Nunuvat has the lowest 38.
   
 - A total number 5496 unique orders are in the dataset
 -- Total number of unique order placed for each year
@@ -148,25 +148,86 @@ order by revenue desc
 WHERE customer_segment = 'Small Business'`
 
   ANSWER:
-  Dennis Kane	Quebec	Quebec	Small Business	75967.59
+  Dennis Kane of Quebec	in the Small Business customer segment with N75,967.59 
   
 8. Which Corporate Customer placed the most number of orders in 2009 – 2012?
    
-9. Which consumer customer was the most profitable one?
-
-`select top 10
+`with customerincorporate as(
+select 
 Customer_Name, region, province, customer_segment,
+	count(distinct order_id) as numberoforders
+from kmscase
+where customer_segment ='Corporate'
+group by  region, province, customer_name, customer_segment
+)
+select region, province, customer_name, customer_segment, year(order_date), count(distinct order_id) as ord
+from allorders
+where customer_name in(select customer_name
+						from customerincorporate)
+						and  customer_segment ='Corporate'
+group by region, province, customer_name, year(order_date), customer_segment
+order by year(order_date), ord desc
+`
+ANSWER:
+In 2009, Adam Shillingsburg of Alberta, West placed the most orders in the corporate customer segment with 7 orders
+In 2010, Doug Bickford of Northwest Territories, placed the most orders in the corporate customer segment with 6 orders
+In 2011, Adam Hart of Yukon, Yukon placed the most orders in the corporate customer segment with 5 orders
+In 2012, Alan Hwang of Ontario, Ontario placed the most orders in the corporate customer segment with 6 orders
+
+`CREATE VIEW ccorp as
+WITH customerincorporate as
+(
+SELECT 
+Customer_Name, region, province, customer_segment,
+	count(distinct order_id) as numberoforders
+from kmscase
+where customer_segment ='Corporate'
+group by  region, province, customer_name, customer_segment
+)
+SELECT region, province, customer_name, customer_segment, year(order_date) as year_of_order, count(distinct order_id) as ord
+from allorders
+where customer_name in(select customer_name
+			from customerincorporate)
+	and  customer_segment ='Corporate'
+group by region, province, customer_name, year(order_date), customer_segment
+
+SELECT Customer_Name, region, province, customer_segment,
+	sum(ord) as numberoforders
+from ccorp
+group by region, province, customer_name, customer_segment
+order by numberoforders desc
+
+ANSWER:
+In total, for the four year period, Jonathan Doherty of Saskachewan, Prarie placed the highest number of orders in the corporate customer segment with 14 orders
+
+   
+10. Which consumer customer was the most profitable one?
+
+`SELECT top 10
+	customer_Name, 
+	region, 
+	province, 
+	customer_segment,
 	round(sum(sales),2) as revenue, sum(profit) as pr
 from kmscase
 group by  region, province, customer_name, customer_segment
 order by pr desc`
 
 ANSWER:
-Emily Phan- Atlantic-New Brunswick, Consumer segment, revenue 97011.19, profit 28663.71
+*Emily Phan*- Atlantic-New Brunswick, Consumer segment, revenue N97,011.19, profit N28,663.71
+
 
 10. Which customer returned items, and what segment do they belong to?
 
--- They were all in the 4 customer segments
+They were all in the four customer segments, where 38% of them are corporate customers 
+
+-- Corporate	334
+
+-- Home Office	201
+
+-- Consumer	147
+
+-- Small Business 190
     
     
 11. If the delivery truck is the most economical but the slowest shipping method and 
