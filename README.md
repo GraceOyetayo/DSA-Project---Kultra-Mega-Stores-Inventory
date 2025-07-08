@@ -43,7 +43,7 @@ The Business Manager has shared an Excel file containing order data from 2009 to
 
 
 #### Case Scenario I 
-1. Which product category had the highest sales? - Technology
+##### 1. Which product category had the highest sales? - Technology
 
 `SELECT product_category, 
 	  max(sales) as max_sales,
@@ -57,7 +57,7 @@ ANSWER
 
 The highest sales were made from the Technology category; it is also the category where about 54% of the profit in the last four years has been gotten.
 
-2. What are the Top 3 and Bottom 3 regions in terms of sales? 
+##### 2. What are the Top 3 and Bottom 3 regions in terms of sales? 
 
 `SELECT top 3 
   region, 
@@ -87,7 +87,7 @@ Answer:
 West, Ontario, Prairie has the top sales by region while Nunavut, Northwest Territories, and Yukon has the lowest sales region
 
 
-3. What were the total sales of appliances in Ontario? 
+##### 3. What were the total sales of appliances in Ontario? 
 
 `select region, 
 	sum(sales) as sales
@@ -101,7 +101,7 @@ ANSWER:
 Total sales made in the region Ontario is N202,346.84 
 
 
-4. Advise the management of KMS on what to do to increase the revenue from the bottom 10 customers
+##### 4. Advise the management of KMS on what to do to increase the revenue from the bottom 10 customers
 
 `select 
 Customer_Name, region, province,
@@ -129,7 +129,7 @@ Further querying into these customers shows they only placed one order in the fo
 This dataset do not show further details into why these customer stopped placing orders as according to order status only one of these orders were returned and most also had short delivery timeline.
 
 
-5. KMS incurred the most shipping cost using which shipping method?
+##### 5. KMS incurred the most shipping cost using which shipping method?
 
 Delivery Truck	51,971.94,
 Express Air	7,850.91,
@@ -139,13 +139,13 @@ The shipping mode where the company spent the most is in delivery truck
 
 
 #### Case Scenario II 
-6. Who are the most valuable customers, and what products or services do they typically 
+##### 6. Who are the most valuable customers, and what products or services do they typically 
 purchase?
 
 
 
 
-6. Which small business customer had the highest sales?
+##### 7. Which small business customer had the highest sales?
    
 `select top 10
 Customer_Name, region, province, customer_segment,
@@ -160,9 +160,9 @@ WHERE customer_segment = 'Small Business'`
   Dennis Kane of Quebec	in the Small Business customer segment with N75,967.59 
   
   
-8. Which Corporate Customer placed the most number of orders in 2009 – 2012?
+##### 8. Which Corporate Customer placed the most number of orders in 2009 – 2012?
    
-`with customerincorporate as(
+`WITH customerincorporate as(
 select 
 Customer_Name, region, province, customer_segment,
 	count(distinct order_id) as numberoforders
@@ -178,7 +178,7 @@ where customer_name in(select customer_name
 group by region, province, customer_name, year(order_date), customer_segment
 order by year(order_date), ord desc
 `
-ANSWER:
+*ANSWER:*
 In 2009, Adam Shillingsburg of Alberta, West placed the most orders in the corporate customer segment with 7 orders
 
 In 2010, Doug Bickford of Northwest Territories, placed the most orders in the corporate customer segment with 6 orders
@@ -186,8 +186,6 @@ In 2010, Doug Bickford of Northwest Territories, placed the most orders in the c
 In 2011, Adam Hart of Yukon, Yukon placed the most orders in the corporate customer segment with 5 orders
 
 In 2012, Alan Hwang of Ontario, Ontario placed the most orders in the corporate customer segment with 6 orders
-
-
 
 
 `CREATE VIEW ccorp as
@@ -214,12 +212,12 @@ from ccorp
 group by region, province, customer_name, customer_segment
 order by numberoforders desc`
 
-ANSWER:
+*ANSWER:*
 
 In total, for the four year period, Jonathan Doherty of Saskachewan, Prarie placed the highest number of orders in the corporate customer segment with 14 orders
 
    
-10. Which consumer customer was the most profitable one?
+##### 9. Which consumer customer was the most profitable one?
 
 `SELECT top 10
 	customer_Name, 
@@ -235,7 +233,7 @@ ANSWER:
 *Emily Phan*- Atlantic-New Brunswick, Consumer segment, revenue N97,011.19, profit N28,663.71
 
 
-10. Which customer returned items, and what segment do they belong to?
+##### 10. Which customer returned items, and what segment do they belong to?
 
 They were all in the four customer segments, where 38% of them are corporate customers 
 
@@ -248,6 +246,6 @@ They were all in the four customer segments, where 38% of them are corporate cus
 -- Small Business 190
     
     
-11. If the delivery truck is the most economical but the slowest shipping method and 
+##### 11. If the delivery truck is the most economical but the slowest shipping method and 
 Express Air is the fastest but the most expensive one, do you think the company 
 appropriately spent shipping costs based on the Order Priority? Explain your answer 
