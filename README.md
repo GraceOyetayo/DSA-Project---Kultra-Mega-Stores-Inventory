@@ -139,9 +139,26 @@ The shipping mode where the company spent the most is in delivery truck
 
 
 #### Case Scenario II 
-##### 6. Who are the most valuable customers, and what products or services do they typically 
-purchase?
+##### 6. Who are the most valuable customers, and what products or services do they typically purchase?
 
+`SELECT 	
+	Customer_Name, 
+ 	REGION, 
+  	Province, 
+   	Customer_Segment, 
+    	SUM(sales) AS sales
+FROM kmscase
+GROUP BY Customer_Name, 
+	REGION, 
+ 	Province, 	
+  	Customer_Segment
+ORDER BY sales DESC`
+
+
+Emily Phan of New Brunswick, Atlantic Consumer	97011.194
+Dennis Kane of Quebec, Quebec	Small Business	75967.5905
+John Lucas of Ontario, Ontario	Small Business	72331.88
+Raymond Book of Alberta, West	Consumer	70426.59
 
 
 
